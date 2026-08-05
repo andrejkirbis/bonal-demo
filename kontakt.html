@@ -7,9 +7,6 @@
 <meta name="description" content="Kontaktirajte BONAL, Natalija Oprešnik s.p. — Cesta XIV. divizije 36, 2000 Maribor. Telefon 040 630 017, info@storitve-bonal.com.">
 <link rel="canonical" href="https://storitve-bonal.com/kontakt">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -240,6 +237,7 @@
 
   <div class="container footer-bottom">
     <span>© <span id="current-year">2026</span> BONAL, Natalija Oprešnik s.p. Vse pravice pridržane.</span>
+    <button type="button" class="footer-cookie-link" id="footer-cookie-settings">Nastavitve piškotkov</button>
     <span>Izdelava: BONAL</span>
   </div>
 </footer>
@@ -269,56 +267,28 @@
     </button>
     <h2 id="cookie-modal-title">Vaše možnosti zasebnosti</h2>
     <p class="cookie-modal-subtitle">Ta spletna stran uporablja piškotke</p>
-    <p>S temi krmilniki lahko sprejmete ali zavrnete različne kategorije piškotkov.</p>
+    <p>Spodaj so navedene vse kategorije, ki dejansko obstajajo na tem spletnem mestu — brez navideznih možnosti. Neobvezno kategorijo lahko kadarkoli sprejmete ali zavrnete; vaša izbira velja na vseh straneh, dokler je ne spremenite.</p>
 
     <h3>Kategorije</h3>
 
     <div class="cookie-category">
       <div class="cookie-category-text">
-        <h4>Oglaševanje</h4>
-        <p>Oglaševalski piškotki so posebej zasnovani za zbiranje informacij o vas v vaši napravi za prikazovanje oglasov, na podlagi ustreznih tem, ki vas zanimajo.</p>
+        <h4>Google Maps (vdelana vsebina)</h4>
+        <p>Na strani Kontakt je na voljo zemljevid Google Maps. Ob prikazu zemljevida se vzpostavi povezava s strežniki Google, ki lahko obdelajo vaš IP naslov skladno s pravili zasebnosti Google. Zemljevid se naloži šele, ko to kategorijo potrdite — do takrat se noben podatek ne pošlje Googlu.</p>
       </div>
       <div class="cookie-toggle-wrap">
         <label class="toggle-switch">
-          <input type="checkbox" id="cookie-cat-advertising" data-category="advertising">
+          <input type="checkbox" id="cookie-cat-maps" data-category="maps">
           <span class="toggle-track" aria-hidden="true"></span>
         </label>
-        <span class="toggle-state" data-state-for="cookie-cat-advertising">Izključen</span>
-      </div>
-    </div>
-
-    <div class="cookie-category">
-      <div class="cookie-category-text">
-        <h4>Analitika</h4>
-        <p>Shranjuje vir prometa, ki pojasnjuje, kako je uporabnik dosegel spletno mesto za kasnejše poročanje.</p>
-      </div>
-      <div class="cookie-toggle-wrap">
-        <label class="toggle-switch">
-          <input type="checkbox" id="cookie-cat-analytics" data-category="analytics">
-          <span class="toggle-track" aria-hidden="true"></span>
-        </label>
-        <span class="toggle-state" data-state-for="cookie-cat-analytics">Izključen</span>
-      </div>
-    </div>
-
-    <div class="cookie-category">
-      <div class="cookie-category-text">
-        <h4>Nastavitve</h4>
-        <p>Uporablja se za spremljanje svojih izbir med uporabo spletnega mesta.</p>
-      </div>
-      <div class="cookie-toggle-wrap">
-        <label class="toggle-switch">
-          <input type="checkbox" id="cookie-cat-preferences" data-category="preferences">
-          <span class="toggle-track" aria-hidden="true"></span>
-        </label>
-        <span class="toggle-state" data-state-for="cookie-cat-preferences">Izključen</span>
+        <span class="toggle-state" data-state-for="cookie-cat-maps">Izključen</span>
       </div>
     </div>
 
     <div class="cookie-category">
       <div class="cookie-category-text">
         <h4>Bistveno</h4>
-        <p>Ti piškotki omogočajo bistveno funkcionalnost spletnega mesta. Odjava ni na voljo.</p>
+        <p>Nujno potrebno za shranjevanje vaše izbire o piškotkih (lokalno v vašem brskalniku) in za osnovno delovanje strani. Ti podatki se ne pošiljajo nikamor. Odjava ni na voljo, ker je ta shramba izvzeta iz zahteve po soglasju (3. odst. 5. člena Direktive 2002/58/ES o zasebnosti in elektronskih komunikacijah).</p>
       </div>
       <div class="cookie-toggle-wrap">
         <label class="toggle-switch">
@@ -330,7 +300,7 @@
 
     <button type="button" class="btn btn-primary btn-block cookie-save" id="cookie-save">Shrani</button>
 
-    <p class="cookie-privacy-contact">Vprašanja o zasebnosti in piškotkih nam lahko pošljete na <a href="mailto:info@storitve-bonal.com">info@storitve-bonal.com</a>.</p>
+    <p class="cookie-privacy-contact">Vprašanja o zasebnosti in piškotkih nam lahko pošljete na <a href="mailto:info@storitve-bonal.com">info@storitve-bonal.com</a>. Pritožbo glede obdelave osebnih podatkov lahko vložite tudi pri <a href="https://www.ip-rs.si" target="_blank" rel="noopener noreferrer">Informacijskem pooblaščencu RS</a>.</p>
   </div>
 </div>
 

@@ -30,9 +30,9 @@
   --surface: var(--white);
   --surface-alt: var(--gray-50);
 
-  /* Typography */
-  --font-heading: "Sora", "Segoe UI", Arial, sans-serif;
-  --font-body: "Inter", "Segoe UI", Arial, sans-serif;
+  /* Typography — system font stack only (no third-party font requests before consent) */
+  --font-heading: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   /* Spacing / shape */
   --radius-sm: 8px;
@@ -1419,6 +1419,21 @@ textarea:focus-visible {
 .footer-bottom a:hover {
   color: var(--white);
   text-decoration: underline;
+}
+
+.footer-cookie-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.footer-cookie-link:hover {
+  color: var(--white);
 }
 
 .back-to-top {

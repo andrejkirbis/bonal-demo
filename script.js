@@ -195,9 +195,20 @@
     });
   }
 
-  /* ---------- Cookie consent (banner + settings modal) ---------- */
+  /* ---------- Cookie consent (banner + settings modal) ----------
+     Categories reflect only what actually exists on this site today:
+     "essential" (storing the consent choice itself — exempt from consent
+     under Art. 5(3) of the ePrivacy Directive / ZEKom-2) and "maps" (the
+     Google Maps embed on kontakt.html, the only real non-essential,
+     third-party integration). No fake "advertising"/"analytics" toggles
+     are shown, since no such trackers exist on the site. The schema is
+     versioned and time-limited so that changing categories in future, or
+     the passage of time, invalidates stale stored consent and re-prompts
+     the visitor rather than silently carrying old choices forward. ---------- */
   function initCookieConsent() {
     var STORAGE_KEY = "bonalCookieConsent";
+    var CONSENT_VERSION = 2;
+    var CONSENT_MAX_AGE_MS = 180 * 24 * 60 * 60 * 1000; // 180 days
 
     var banner = document.querySelector("#cookie-banner");
     var overlay = document.querySelector("#cookie-modal-overlay");
@@ -209,23 +220,46 @@
     var moreBtn = document.querySelector("#cookie-more");
     var closeBtn = document.querySelector("#cookie-modal-close");
     var saveBtn = document.querySelector("#cookie-save");
+    var footerSettingsBtn = document.querySelector("#footer-cookie-settings");
     var toggles = overlay.querySelectorAll("input[data-category]");
 
     function readConsent() {
+      var raw;
       try {
-        var raw = window.localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : null;
+        raw = window.localStorage.getItem(STORAGE_KEY);
       } catch (e) {
         return null;
       }
+      if (!raw) return null;
+
+      var parsed;
+      try {
+        parsed = JSON.parse(raw);
+      } catch (e) {
+        return null;
+      }
+
+      if (!parsed || parsed.version !== CONSENT_VERSION) return null;
+
+      var age = Date.now() - Date.parse(parsed.timestamp || "");
+      if (!isFinite(age) || age > CONSENT_MAX_AGE_MS) return null;
+
+      return parsed;
     }
 
-    function writeConsent(consent) {
+    function writeConsent(partial) {
+      var consent = {
+        version: CONSENT_VERSION,
+        essential: true,
+        maps: Boolean(partial.maps),
+        timestamp: new Date().toISOString()
+      };
       try {
         window.localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
       } catch (e) {
-        /* localStorage unavailable (private browsing) — consent still applies for this page view */
+        /* localStorage unavailable (private browsing) — consent still applies for this page view only */
       }
+      return consent;
     }
 
     function updateToggleLabel(toggle) {
@@ -242,16 +276,12 @@
       });
     }
 
-    function hasNonEssentialConsent(consent) {
-      return Boolean(consent && (consent.advertising || consent.analytics || consent.preferences));
-    }
-
     function applyMapConsent(consent) {
       var iframe = document.querySelector("#map-iframe");
       var placeholder = document.querySelector("#map-placeholder");
       if (!iframe || !placeholder) return;
 
-      if (hasNonEssentialConsent(consent)) {
+      if (consent && consent.maps) {
         if (!iframe.getAttribute("src") && iframe.dataset.src) {
           iframe.setAttribute("src", iframe.dataset.src);
         }
@@ -282,8 +312,8 @@
       document.body.style.overflow = "";
     }
 
-    function saveConsent(consent) {
-      writeConsent(consent);
+    function saveConsent(partial) {
+      var consent = writeConsent(partial);
       applyToggleStates(consent);
       applyMapConsent(consent);
       hideBanner();
@@ -291,11 +321,11 @@
     }
 
     function acceptAll() {
-      saveConsent({ essential: true, advertising: true, analytics: true, preferences: true });
+      saveConsent({ maps: true });
     }
 
     function rejectAll() {
-      saveConsent({ essential: true, advertising: false, analytics: false, preferences: false });
+      saveConsent({ maps: false });
     }
 
     var existing = readConsent();
@@ -320,6 +350,15 @@
     if (moreBtn) moreBtn.addEventListener("click", openModal);
     if (closeBtn) closeBtn.addEventListener("click", closeModal);
 
+    // Always available, on every page, so consent can be withdrawn or
+    // changed at any time — not just on first visit.
+    if (footerSettingsBtn) {
+      footerSettingsBtn.addEventListener("click", function () {
+        applyToggleStates(readConsent());
+        openModal();
+      });
+    }
+
     overlay.addEventListener("click", function (event) {
       if (event.target === overlay) closeModal();
     });
@@ -330,13 +369,13 @@
 
     if (saveBtn) {
       saveBtn.addEventListener("click", function () {
-        var consent = { essential: true };
+        var partial = {};
         toggles.forEach(function (toggle) {
           var category = toggle.getAttribute("data-category");
           if (category === "essential") return;
-          consent[category] = toggle.checked;
+          partial[category] = toggle.checked;
         });
-        saveConsent(consent);
+        saveConsent(partial);
       });
     }
 
