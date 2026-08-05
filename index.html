@@ -331,6 +331,92 @@
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
 
+<div class="cookie-banner" id="cookie-banner" role="region" aria-label="Obvestilo o piškotkih" hidden>
+  <div class="cookie-banner-inner">
+    <div class="cookie-banner-text">
+      <h2>Ta spletna stran uporablja piškotke</h2>
+      <p>Piškotki so majhni deli besedila, ki jih pošlje vaš spletni brskalnik s spletnim mestom, ki ga obiščete. Datoteka s piškotki se shrani v vaš spletni brskalnik in nam omogoča, da vas prepoznamo in si zapomnimo vaše nastavitve. S klikom na Sprejmi se strinjate z našo uporabo piškotkov. <button type="button" class="cookie-link" id="cookie-more">Preberi več</button></p>
+    </div>
+    <div class="cookie-banner-actions">
+      <button type="button" class="btn cookie-btn" id="cookie-accept">Sprejmi</button>
+      <button type="button" class="btn cookie-btn" id="cookie-reject">Zavrni</button>
+      <button type="button" class="btn cookie-btn" id="cookie-manage">Upravljanje nastavitev</button>
+    </div>
+  </div>
+</div>
+
+<div class="cookie-modal-overlay" id="cookie-modal-overlay" hidden>
+  <div class="cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
+    <button type="button" class="cookie-modal-close" id="cookie-modal-close" aria-label="Zapri">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <h2 id="cookie-modal-title">Vaše možnosti zasebnosti</h2>
+    <p class="cookie-modal-subtitle">Ta spletna stran uporablja piškotke</p>
+    <p>S temi krmilniki lahko sprejmete ali zavrnete različne kategorije piškotkov.</p>
+
+    <h3>Kategorije</h3>
+
+    <div class="cookie-category">
+      <div class="cookie-category-text">
+        <h4>Oglaševanje</h4>
+        <p>Oglaševalski piškotki so posebej zasnovani za zbiranje informacij o vas v vaši napravi za prikazovanje oglasov, na podlagi ustreznih tem, ki vas zanimajo.</p>
+      </div>
+      <div class="cookie-toggle-wrap">
+        <label class="toggle-switch">
+          <input type="checkbox" id="cookie-cat-advertising" data-category="advertising">
+          <span class="toggle-track" aria-hidden="true"></span>
+        </label>
+        <span class="toggle-state" data-state-for="cookie-cat-advertising">Izključen</span>
+      </div>
+    </div>
+
+    <div class="cookie-category">
+      <div class="cookie-category-text">
+        <h4>Analitika</h4>
+        <p>Shranjuje vir prometa, ki pojasnjuje, kako je uporabnik dosegel spletno mesto za kasnejše poročanje.</p>
+      </div>
+      <div class="cookie-toggle-wrap">
+        <label class="toggle-switch">
+          <input type="checkbox" id="cookie-cat-analytics" data-category="analytics">
+          <span class="toggle-track" aria-hidden="true"></span>
+        </label>
+        <span class="toggle-state" data-state-for="cookie-cat-analytics">Izključen</span>
+      </div>
+    </div>
+
+    <div class="cookie-category">
+      <div class="cookie-category-text">
+        <h4>Nastavitve</h4>
+        <p>Uporablja se za spremljanje svojih izbir med uporabo spletnega mesta.</p>
+      </div>
+      <div class="cookie-toggle-wrap">
+        <label class="toggle-switch">
+          <input type="checkbox" id="cookie-cat-preferences" data-category="preferences">
+          <span class="toggle-track" aria-hidden="true"></span>
+        </label>
+        <span class="toggle-state" data-state-for="cookie-cat-preferences">Izključen</span>
+      </div>
+    </div>
+
+    <div class="cookie-category">
+      <div class="cookie-category-text">
+        <h4>Bistveno</h4>
+        <p>Ti piškotki omogočajo bistveno funkcionalnost spletnega mesta. Odjava ni na voljo.</p>
+      </div>
+      <div class="cookie-toggle-wrap">
+        <label class="toggle-switch">
+          <input type="checkbox" id="cookie-cat-essential" data-category="essential" checked disabled>
+          <span class="toggle-track" aria-hidden="true"></span>
+        </label>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-block cookie-save" id="cookie-save">Shrani</button>
+
+    <p class="cookie-privacy-contact">Vprašanja o zasebnosti in piškotkih nam lahko pošljete na <a href="mailto:info@storitve-bonal.com">info@storitve-bonal.com</a>.</p>
+  </div>
+</div>
+
 <script src="script.js"></script>
 </body>
 </html>

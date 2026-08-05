@@ -14,6 +14,7 @@
     initBackToTop();
     initFooterYear();
     initContactForm();
+    initCookieConsent();
   });
 
   /* ---------- Mobile navigation toggle ---------- */
@@ -192,5 +193,156 @@
 
       form.reset();
     });
+  }
+
+  /* ---------- Cookie consent (banner + settings modal) ---------- */
+  function initCookieConsent() {
+    var STORAGE_KEY = "bonalCookieConsent";
+
+    var banner = document.querySelector("#cookie-banner");
+    var overlay = document.querySelector("#cookie-modal-overlay");
+    if (!banner || !overlay) return;
+
+    var acceptBtn = document.querySelector("#cookie-accept");
+    var rejectBtn = document.querySelector("#cookie-reject");
+    var manageBtn = document.querySelector("#cookie-manage");
+    var moreBtn = document.querySelector("#cookie-more");
+    var closeBtn = document.querySelector("#cookie-modal-close");
+    var saveBtn = document.querySelector("#cookie-save");
+    var toggles = overlay.querySelectorAll("input[data-category]");
+
+    function readConsent() {
+      try {
+        var raw = window.localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function writeConsent(consent) {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
+      } catch (e) {
+        /* localStorage unavailable (private browsing) — consent still applies for this page view */
+      }
+    }
+
+    function updateToggleLabel(toggle) {
+      var label = overlay.querySelector('.toggle-state[data-state-for="' + toggle.id + '"]');
+      if (label) label.textContent = toggle.checked ? "Vključen" : "Izključen";
+    }
+
+    function applyToggleStates(consent) {
+      toggles.forEach(function (toggle) {
+        var category = toggle.getAttribute("data-category");
+        if (category === "essential") return;
+        toggle.checked = Boolean(consent && consent[category]);
+        updateToggleLabel(toggle);
+      });
+    }
+
+    function hasNonEssentialConsent(consent) {
+      return Boolean(consent && (consent.advertising || consent.analytics || consent.preferences));
+    }
+
+    function applyMapConsent(consent) {
+      var iframe = document.querySelector("#map-iframe");
+      var placeholder = document.querySelector("#map-placeholder");
+      if (!iframe || !placeholder) return;
+
+      if (hasNonEssentialConsent(consent)) {
+        if (!iframe.getAttribute("src") && iframe.dataset.src) {
+          iframe.setAttribute("src", iframe.dataset.src);
+        }
+        iframe.hidden = false;
+        placeholder.hidden = true;
+      } else {
+        iframe.hidden = true;
+        placeholder.hidden = false;
+      }
+    }
+
+    function hideBanner() {
+      banner.hidden = true;
+    }
+
+    function showBanner() {
+      banner.hidden = false;
+    }
+
+    function openModal() {
+      overlay.hidden = false;
+      document.body.style.overflow = "hidden";
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function closeModal() {
+      overlay.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    function saveConsent(consent) {
+      writeConsent(consent);
+      applyToggleStates(consent);
+      applyMapConsent(consent);
+      hideBanner();
+      closeModal();
+    }
+
+    function acceptAll() {
+      saveConsent({ essential: true, advertising: true, analytics: true, preferences: true });
+    }
+
+    function rejectAll() {
+      saveConsent({ essential: true, advertising: false, analytics: false, preferences: false });
+    }
+
+    var existing = readConsent();
+    if (existing) {
+      applyToggleStates(existing);
+      applyMapConsent(existing);
+      hideBanner();
+    } else {
+      applyMapConsent(null);
+      showBanner();
+    }
+
+    toggles.forEach(function (toggle) {
+      toggle.addEventListener("change", function () {
+        updateToggleLabel(toggle);
+      });
+    });
+
+    if (acceptBtn) acceptBtn.addEventListener("click", acceptAll);
+    if (rejectBtn) rejectBtn.addEventListener("click", rejectAll);
+    if (manageBtn) manageBtn.addEventListener("click", openModal);
+    if (moreBtn) moreBtn.addEventListener("click", openModal);
+    if (closeBtn) closeBtn.addEventListener("click", closeModal);
+
+    overlay.addEventListener("click", function (event) {
+      if (event.target === overlay) closeModal();
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && !overlay.hidden) closeModal();
+    });
+
+    if (saveBtn) {
+      saveBtn.addEventListener("click", function () {
+        var consent = { essential: true };
+        toggles.forEach(function (toggle) {
+          var category = toggle.getAttribute("data-category");
+          if (category === "essential") return;
+          consent[category] = toggle.checked;
+        });
+        saveConsent(consent);
+      });
+    }
+
+    var mapConsentBtn = document.querySelector("#map-consent-btn");
+    if (mapConsentBtn) {
+      mapConsentBtn.addEventListener("click", acceptAll);
+    }
   }
 })();
