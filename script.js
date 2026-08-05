@@ -126,12 +126,19 @@
     if (el) el.textContent = String(new Date().getFullYear());
   }
 
-  /* ---------- Contact form validation ---------- */
+  /* ---------- Contact form: validation + real submission (Formspree) ----------
+     Submits via fetch() to the form's own `action` (a Formspree endpoint).
+     Success is only ever shown after a genuine 2xx response; any network
+     failure or non-ok response shows a real error state with a mailto
+     fallback — no simulated/fake success. ---------- */
   function initContactForm() {
     var form = document.querySelector("#contact-form");
     if (!form) return;
 
     var successBox = document.querySelector("#form-success");
+    var errorBox = document.querySelector("#form-error");
+    var submitBtn = form.querySelector('button[type="submit"]');
+    var submitLabel = submitBtn ? submitBtn.querySelector(".btn-label") : null;
 
     var validators = {
       name: function (value) {
@@ -154,6 +161,37 @@
       if (errorEl) errorEl.textContent = message;
     }
 
+    function setSubmitting(isSubmitting) {
+      if (!submitBtn) return;
+      submitBtn.disabled = isSubmitting;
+      if (submitLabel) {
+        submitLabel.textContent = isSubmitting ? "Pošiljanje …" : "Pošlji sporočilo";
+      }
+    }
+
+    function hideStatusBoxes() {
+      if (successBox) successBox.classList.remove("is-visible");
+      if (errorBox) errorBox.classList.remove("is-visible");
+    }
+
+    function showSuccess() {
+      hideStatusBoxes();
+      if (successBox) {
+        successBox.classList.add("is-visible");
+        successBox.setAttribute("tabindex", "-1");
+        successBox.focus();
+      }
+    }
+
+    function showError() {
+      hideStatusBoxes();
+      if (errorBox) {
+        errorBox.classList.add("is-visible");
+        errorBox.setAttribute("tabindex", "-1");
+        errorBox.focus();
+      }
+    }
+
     Object.keys(validators).forEach(function (name) {
       var field = form.elements.namedItem(name);
       if (!field) return;
@@ -169,8 +207,9 @@
 
     form.addEventListener("submit", function (event) {
       event.preventDefault();
-      var isValid = true;
+      hideStatusBoxes();
 
+      var isValid = true;
       Object.keys(validators).forEach(function (name) {
         var field = form.elements.namedItem(name);
         if (!field) return;
@@ -185,13 +224,26 @@
         return;
       }
 
-      if (successBox) {
-        successBox.classList.add("is-visible");
-        successBox.setAttribute("tabindex", "-1");
-        successBox.focus();
-      }
+      setSubmitting(true);
 
-      form.reset();
+      fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" }
+      })
+        .then(function (response) {
+          setSubmitting(false);
+          if (response.ok) {
+            showSuccess();
+            form.reset();
+          } else {
+            showError();
+          }
+        })
+        .catch(function () {
+          setSubmitting(false);
+          showError();
+        });
     });
   }
 
@@ -220,7 +272,7 @@
     var moreBtn = document.querySelector("#cookie-more");
     var closeBtn = document.querySelector("#cookie-modal-close");
     var saveBtn = document.querySelector("#cookie-save");
-    var footerSettingsBtn = document.querySelector("#footer-cookie-settings");
+    var settingsTriggers = document.querySelectorAll(".js-cookie-settings-trigger");
     var toggles = overlay.querySelectorAll("input[data-category]");
 
     function readConsent() {
@@ -350,14 +402,15 @@
     if (moreBtn) moreBtn.addEventListener("click", openModal);
     if (closeBtn) closeBtn.addEventListener("click", closeModal);
 
-    // Always available, on every page, so consent can be withdrawn or
-    // changed at any time — not just on first visit.
-    if (footerSettingsBtn) {
-      footerSettingsBtn.addEventListener("click", function () {
+    // Always available (footer link on every page, plus the in-page
+    // button on the privacy policy page), so consent can be withdrawn
+    // or changed at any time — not just on first visit.
+    settingsTriggers.forEach(function (trigger) {
+      trigger.addEventListener("click", function () {
         applyToggleStates(readConsent());
         openModal();
       });
-    }
+    });
 
     overlay.addEventListener("click", function (event) {
       if (event.target === overlay) closeModal();

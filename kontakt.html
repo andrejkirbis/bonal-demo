@@ -135,7 +135,16 @@
             Hvala za vaše sporočilo! Kmalu vas kontaktiramo.
           </div>
 
-          <form id="contact-form" novalidate>
+          <div class="form-error" id="form-error" role="alert">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+            <span>Sporočila trenutno ni bilo mogoče poslati. Poskusite znova ali nam pišite neposredno na <a href="mailto:info@storitve-bonal.com">info@storitve-bonal.com</a>.</span>
+          </div>
+
+          <!-- TODO: replace YOUR_FORM_ID below with the real Formspree form ID before publishing (formspree.io) -->
+          <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="visually-hidden" aria-hidden="true">
+            <input type="hidden" name="_subject" value="Novo povpraševanje s spletne strani BONAL">
+
             <div class="form-row">
               <div class="form-field">
                 <label for="name">Ime in priimek</label>
@@ -161,11 +170,11 @@
             </div>
 
             <button type="submit" class="btn btn-primary btn-block">
-              Pošlji sporočilo
+              <span class="btn-label">Pošlji sporočilo</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
             </button>
 
-            <p class="form-note">S klikom na »Pošlji sporočilo« se strinjate, da vas kontaktiramo v zvezi z vašim povpraševanjem.</p>
+            <p class="form-note">S klikom na »Pošlji sporočilo« se strinjate, da vas kontaktiramo v zvezi z vašim povpraševanjem. Sporočilo se posreduje preko storitve Formspree — glejte <a href="politika-zasebnosti.html">politiko zasebnosti</a>.</p>
           </form>
         </div>
       </div>
@@ -210,6 +219,7 @@
         <li><a href="o-nas.html">O nas</a></li>
         <li><a href="kontakt.html">Kontakt</a></li>
         <li><a href="koristne-povezave.html">Koristne povezave</a></li>
+        <li><a href="politika-zasebnosti.html">Politika zasebnosti</a></li>
       </ul>
     </div>
 
@@ -237,7 +247,7 @@
 
   <div class="container footer-bottom">
     <span>© <span id="current-year">2026</span> BONAL, Natalija Oprešnik s.p. Vse pravice pridržane.</span>
-    <button type="button" class="footer-cookie-link" id="footer-cookie-settings">Nastavitve piškotkov</button>
+    <button type="button" class="footer-cookie-link js-cookie-settings-trigger" id="footer-cookie-settings">Nastavitve piškotkov</button>
     <span>Izdelava: BONAL</span>
   </div>
 </footer>
@@ -267,7 +277,7 @@
     </button>
     <h2 id="cookie-modal-title">Vaše možnosti zasebnosti</h2>
     <p class="cookie-modal-subtitle">Ta spletna stran uporablja piškotke</p>
-    <p>Spodaj so navedene vse kategorije, ki dejansko obstajajo na tem spletnem mestu — brez navideznih možnosti. Neobvezno kategorijo lahko kadarkoli sprejmete ali zavrnete; vaša izbira velja na vseh straneh, dokler je ne spremenite.</p>
+    <p>Spodaj so navedene vse kategorije, ki dejansko obstajajo na tem spletnem mestu — brez navideznih možnosti. Neobvezno kategorijo lahko kadarkoli sprejmete ali zavrnete; vaša izbira velja na vseh straneh, dokler je ne spremenite. Podrobnosti si preberite v <a href="politika-zasebnosti.html">politiki zasebnosti</a>.</p>
 
     <h3>Kategorije</h3>
 
