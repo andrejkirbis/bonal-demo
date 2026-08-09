@@ -330,7 +330,7 @@ textarea:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  padding-block: 1.05rem;
+  padding-block: 0.75rem;
 }
 
 .brand {
@@ -354,19 +354,19 @@ textarea:focus-visible {
 
 /* Full logo PNG (header) */
 .brand-logo-full {
-  height: 62px;
+  height: 72px;
   width: auto;
   display: block;
   flex-shrink: 0;
-  max-width: 360px;
+  max-width: 420px;
 }
 
 @media (max-width: 768px) {
-  .brand-logo-full { height: 52px; max-width: 290px; }
+  .brand-logo-full { height: 60px; max-width: 335px; }
 }
 
 @media (max-width: 480px) {
-  .brand-logo-full { height: 44px; max-width: 235px; }
+  .brand-logo-full { height: 52px; max-width: 270px; }
 }
 
 /* Legacy brand-mark kept for fallback safety; hidden when logo-img present */
@@ -653,22 +653,6 @@ textarea:focus-visible {
   flex-shrink: 0;
 }
 
-.hero-quote {
-  margin-top: 1.5rem;
-  padding-top: 1.4rem;
-  border-top: 1px dashed rgba(255, 255, 255, 0.25);
-  font-size: 0.92rem;
-  font-style: italic;
-  color: rgba(255, 255, 255, 0.65);
-}
-
-.hero-quote cite {
-  display: block;
-  margin-top: 0.4rem;
-  font-style: normal;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
-}
 
 @media (max-width: 960px) {
   .hero-grid {
