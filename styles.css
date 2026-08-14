@@ -976,6 +976,49 @@ textarea:focus-visible {
   font-size: 0.95rem;
 }
 
+/* ---------- Founder block in hero (homepage) ---------- */
+.hero-founder {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.hero-founder-photo {
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 15%;
+  display: block;
+  margin: 0 auto 0.5rem;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+}
+
+.hero-founder-name {
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.hero-founder-role {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 860px) {
+  .hero-founder-photo {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+/* Single-column variant of about-lead (when no right column) */
+.about-lead--solo {
+  grid-template-columns: 1fr;
+  max-width: 740px;
+}
+
 .info-table {
   width: 100%;
   border-collapse: collapse;
