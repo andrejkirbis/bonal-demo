@@ -978,38 +978,43 @@ textarea:focus-visible {
 
 /* ---------- Founder block in hero (homepage) ---------- */
 .hero-founder {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-lg);
+  padding: 2rem 2rem 1.75rem;
+  backdrop-filter: blur(6px);
   text-align: center;
   margin-bottom: 1.25rem;
 }
 
 .hero-founder-photo {
-  width: 190px;
-  height: 190px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
   object-fit: cover;
   object-position: center 15%;
   display: block;
-  margin: 0 auto 0.5rem;
-  border: 3px solid rgba(255, 255, 255, 0.2);
+  margin: 0 auto 1rem;
+  border: 3px solid rgba(255, 255, 255, 0.25);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
 }
 
 .hero-founder-name {
   color: var(--white);
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.3rem;
 }
 
 .hero-founder-role {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.85rem;
 }
 
 @media (max-width: 860px) {
   .hero-founder-photo {
-    width: 140px;
-    height: 140px;
+    width: 130px;
+    height: 130px;
   }
 }
 
