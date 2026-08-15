@@ -11,12 +11,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-if (!empty($_POST['_gotcha'])) {
-    fwrite($log, "Rejected: honeypot\n");
-    fclose($log);
-    http_response_code(200);
-    exit;
-}
+// HONEYPOT TEMPORARILY DISABLED FOR DEBUGGING
+$gotcha_raw = $_POST['_gotcha'] ?? '(key missing)';
+fwrite($log, "honeypot field value: [" . addslashes($gotcha_raw) . "]\n");
+// if (!empty($_POST['_gotcha'])) {
+//     fwrite($log, "Rejected: honeypot\n");
+//     fclose($log);
+//     http_response_code(200);
+//     exit;
+// }
 
 // Changed from natalijaopresnik@siol.net to info@storitve-bonal.com
 // (same mailbox the old Domenca CMS form uses — known to work on this server)
