@@ -1,16 +1,26 @@
 <?php
+// --- Temporary debug log (remove after confirming mail works) ---
+$log = fopen(__DIR__ . '/mail_debug.log', 'a');
+fwrite($log, "\n--- " . date('Y-m-d H:i:s') . " ---\n");
+fwrite($log, "METHOD: " . ($_SERVER['REQUEST_METHOD'] ?? 'n/a') . "\n");
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    fwrite($log, "Rejected: not POST\n");
+    fclose($log);
     http_response_code(405);
     exit;
 }
 
-// Honeypot — bots fill this, humans leave it empty
 if (!empty($_POST['_gotcha'])) {
+    fwrite($log, "Rejected: honeypot\n");
+    fclose($log);
     http_response_code(200);
     exit;
 }
 
-$to = 'natalijaopresnik@siol.net';
+// Changed from natalijaopresnik@siol.net to info@storitve-bonal.com
+// (same mailbox the old Domenca CMS form uses — known to work on this server)
+$to = 'info@storitve-bonal.com';
 
 function clean($val) {
     return trim(strip_tags((string)$val));
@@ -21,17 +31,15 @@ $email   = trim((string)($_POST['email']   ?? ''));
 $phone   = clean($_POST['phone']  ?? '');
 $message = clean($_POST['message'] ?? '');
 
-// Server-side validation
-if (
-    strlen($name) < 2 ||
-    strlen($message) < 10 ||
-    !filter_var($email, FILTER_VALIDATE_EMAIL)
-) {
+fwrite($log, "name=[{$name}] email=[{$email}] msg_len=" . strlen($message) . "\n");
+
+if (strlen($name) < 2 || strlen($message) < 10 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    fwrite($log, "Rejected: validation failed\n");
+    fclose($log);
     http_response_code(400);
     exit;
 }
 
-// Prevent header injection
 $name  = str_replace(["\r", "\n"], '', $name);
 $email = str_replace(["\r", "\n"], '', $email);
 
@@ -46,14 +54,16 @@ if ($phone !== '') {
 }
 $body .= "\nSporočilo:\n{$message}\n";
 
-$headers  = "From: Kontaktni obrazec BONAL <noreply@storitve-bonal.com>\r\n";
-$headers .= "Reply-To: {$name} <{$email}>\r\n";
+$headers  = "From: noreply@storitve-bonal.com\r\n";
+$headers .= "Reply-To: {$email}\r\n";
 $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 $headers .= "MIME-Version: 1.0\r\n";
-$headers .= "X-Mailer: PHP/" . PHP_VERSION . "\r\n";
 
-if (mail($to, $subject, $body, $headers)) {
-    http_response_code(200);
-} else {
-    http_response_code(500);
-}
+$result = mail($to, $subject, $body, $headers);
+$err    = error_get_last();
+
+fwrite($log, "mail() returned: " . ($result ? 'TRUE' : 'FALSE') . "\n");
+fwrite($log, "error_get_last: " . print_r($err, true) . "\n");
+fclose($log);
+
+http_response_code($result ? 200 : 500);
