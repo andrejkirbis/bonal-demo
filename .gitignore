@@ -4,3 +4,5 @@ Logoti/
 logo new.png
 *.bmp
 *.docx
+smtp_config.php
+mail_debug.log
